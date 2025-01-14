@@ -1,0 +1,3 @@
+[submodule "repak-rivals"]
+	path = repak-rivals
+	url = git@github.com:natimerry/repak-rivals.git
