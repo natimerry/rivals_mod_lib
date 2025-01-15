@@ -5,6 +5,7 @@ use base64::Engine;
 use std::fs::File;
 use std::io::BufReader;
 use std::path::{Path, PathBuf};
+use repak_rivals::PakBuilder;
 
 pub struct ModPak {
     path: String,
@@ -50,6 +51,7 @@ impl ReadPak for NetEasePak {
             .key(aes)
             .reader(&mut BufReader::new(File::open(&self.path).unwrap()))
             .expect("Unable to open file");
+
         let mount_point = PathBuf::from(rdr.mount_point());
 
         let full_paths = rdr.files().into_iter().for_each(|path| {
@@ -58,6 +60,8 @@ impl ReadPak for NetEasePak {
     }
 
     fn encode_pak(&self) {
-        todo!()
+        let aes = self.get_aes_obj();
+        let pak = PakBuilder::new().key(aes).encrypter(&mut BufReader::new(File::open(&self.path).unwrap())).expect("Unable to build pakker");
+
     }
 }
